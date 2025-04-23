@@ -5,7 +5,7 @@ RUN set -x \
  && apt-get update \
  && apt-get install -y --no-install-recommends \
 		iproute2 net-tools iputils-ping \
-		socat procps curl jq \
+		socat procps curl jq tcpdump bridge-utils \
                 python3-minimal libpython3-stdlib \
 		g++ cmake make libpcap-dev \
  && rm -rf /var/lib/apt/lists/*

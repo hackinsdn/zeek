@@ -17,9 +17,6 @@ docker run --pull always -d --name zeek hackinsdn/zeek
 The Docker execution can be customized / enhanced with a few environment variables:
 
 - `ZEEK_INTERFACE`: interface name where zeek will monitor traffic (defaults to `eth0`)
-- `ZEEK_DISABLE_CHECKSUMS`: whether or not to disable checksum checks on Zeek packet capture process
-- `ZEEK_SCRIPTS`: user-provided scripts to be executed by zeek
-- `ZEEK_ARGS`: user-provided extra arguments to be executed on Zeek startup
 
 ## Monitoring network traffic with Zeek
 
@@ -28,10 +25,10 @@ On Zeek you can monitor live traffic or you can process trace files. Using this 
 Running Zeek inline means that the traffic will be received on a certain interface A and forwarded to interface B, while Zeek will capture traffic passing through those interfaces. It is not the focus of this documentation to provide means to enable such forwarding capability, but you can use something as simple as Linux Bridges:
 
 ```
-ip link add name br0 type bridge
-ip link set dev br0 up
-ip link set dev eth0 master br0
-ip link set dev eth1 master br0
+brctl addbr br0
+brctl addif br0 eth0
+brctl addif br0 eth1
+ip link set up br0
 ```
 
 Then you configure Zeek execution so that `ZEEK_INTERFACE=br0`.
