@@ -37,3 +37,8 @@ ip link set dev eth1 master br0
 Then you configure Zeek execution so that `ZEEK_INTERFACE=br0`.
 
 Running Zeek with mirroring will depend on you enabling mirroring on your network (notice that some vendors may have different names for this feature: mirror port, span port, copy port, network tap, etc.) and then export the mirrored packets to Zeek, and of course setting the `ZEEK_INTERFACE` to the interface name that will receive such mirrored traffic.
+
+## References
+
+- https://docs.zeek.org/en/master/get-started.html
+- https://www.activecountermeasures.com/where-do-i-put-my-zeek-sensor/
