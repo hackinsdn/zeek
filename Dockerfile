@@ -9,3 +9,7 @@ RUN set -x \
                 python3-minimal libpython3-stdlib \
 		g++ cmake make libpcap-dev \
  && rm -rf /var/lib/apt/lists/*
+
+COPY files/ /
+
+ENTRYPOINT ["/docker-entrypoint.sh"]
