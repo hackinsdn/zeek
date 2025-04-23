@@ -1,5 +1,7 @@
 #!/bin/sh
 
+export ZEEK_INTERFACE=${ZEEK_INTERFACE:-eth0}
+
 if [ "$#" != "0" ]; then
   echo executing user-provided command: $@ 1>&2
   exec "$@"
