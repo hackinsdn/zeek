@@ -41,7 +41,7 @@ export {
 
 	global total_queries = 0;
 	global total_entropy = 0;
-	global total_propabilities = 0;
+	global total_score = 0;
 
 	## The FileHash logging stream identifier.
    	## Append the value LOG to the Log::ID enumerable.
@@ -56,7 +56,7 @@ export {
 		id: conn_id &log &optional; 
 		rquery: string &log &optional;
 		entropy: double &log &optional;
-		probability: double &log &optional;
+		score: double &log &optional;
 		detection_type: string &log &optional;
 
 	};
@@ -169,7 +169,7 @@ function entropy(data: string):double
 }
 
 
-function probabilities(data: string):double
+function score_calc(data: string):double
 	{
 	local result=0;
 
@@ -215,7 +215,7 @@ event dns_request(c: connection, msg: dns_msg, query: string, qtype: count, qcla
         total_queries += 1; 	
 	total_entropy += entropy_result;
 
-	local probability = 0.0; #Used to calculate the probability based on the dataset
+	local score1 = 0.0; #Used to calculate the probability based on the dataset
 	local counter1=0; #Used to track which bigram of the query is being analyzed
 	local bigram:string; #Used to track the bigrams analyzed
 	local result=0.0; 
@@ -226,25 +226,25 @@ event dns_request(c: connection, msg: dns_msg, query: string, qtype: count, qcla
 						{
 						bigram=query[counter1]+query[counter1+1];
 						#print bigram;
-						result=probabilities(bigram);
-						probability = probability+result;
+						result=score_calc(bigram);
+						score1 = score1+result;
 						}
 						counter1+=1;
 				}
 			
 
-			Log::write(WTGDomainAnalysis::LOG, [$ctime=current_time(), $uid=c$dns$uid, $id=c$dns$id, $rquery=query, $entropy=entropy_result, $probability=probability, $detection_type="DOMAIN_ANALYSIS"]);	
+			Log::write(WTGDomainAnalysis::LOG, [$ctime=current_time(), $uid=c$dns$uid, $id=c$dns$id, $rquery=query, $entropy=entropy_result, $score=score1, $detection_type="DOMAIN_ANALYSIS"]);	
 
 		
 							
 			#print("Local results");
 			#print(query);
 			#print(entropy_result);
-			#print(probability);
+			#print(score1);
 		
 		
 	
-		total_propabilities += probability;
+		total_score += score1;
 		
 		
 	}
@@ -267,4 +267,3 @@ event zeek_done(){
 
 	
 	
-
